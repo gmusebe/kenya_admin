@@ -1,0 +1,51 @@
+---
+title: "Kenya"
+author: "Ivan Musebe"
+date: "2/8/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r echo = FALSE, fig.height= 10, fig.width = 12, fig.align="left"}
+ke <- st_read("ken_admbnda_adm0_iebc_20191031.shp",stringsAsFactors = FALSE)
+level_1 <- st_read("ken_admbnda_adm1_iebc_20191031.shp", stringsAsFactors = FALSE)
+level_2 <- st_read("ken_admbnda_adm2_iebc_20191031.shp",stringsAsFactors = FALSE)
+
+t <- c('Isiolo', 'Kajiado', 'Kericho', 'Kiambu', 'Kilifi', 'Kirinyaga', 'Kisumu', 'Kwale', 'Laikipia', 'Lamu', 'Marsabit',
+       'Migori', 'Mombasa', "Murang'a", 'Nairobi', 'Nakuru', 'Narok', 'Trans Nzoia', 'Uasin Gishu', 'Wajir')
+
+level <- level_1[level_1$ADM1_EN %in% t,]
+
+plot(leaflet() %>% addTiles()  %>%
+  addProviderTiles(providers$OpenStreetMap) %>%
+  addPolygons(data = ke, # borders of the Country
+              color = "black",
+              fill = NA,
+              weight = 2,
+              opacity = 1) %>%
+  addPolygons(data = level, # borders of province
+              color = "black",
+              opacity = 0.4,
+              fillOpacity = 0.4,
+              fillColor = 'red',
+              weight = 2))
+```
